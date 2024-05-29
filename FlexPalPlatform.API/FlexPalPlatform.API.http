@@ -1,0 +1,6 @@
+@FlexPalPlatform.API_HostAddress = http://localhost:5187
+
+GET {{FlexPalPlatform.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
