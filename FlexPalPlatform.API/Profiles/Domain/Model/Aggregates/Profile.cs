@@ -1,4 +1,5 @@
 ﻿
+using FlexPalPlatform.API.Profiles.Domain.Model.Commands;
 using FlexPalPlatform.API.Profiles.Domain.Model.ValueObjects;
 
 namespace FlexPalPlatform.API.Profiles.Domain.Model.Aggregates;
@@ -20,6 +21,15 @@ public partial class Profile
         Phone = new PhoneNumber(phone);
         Role = new RoleType(role);
     }
+
+    public Profile(CreateProfileCommand command)
+    {
+        Name= new PersonName(command.FirstName, command.LastName);
+        Email = new EmailAddress(command.Email);
+        Phone = new PhoneNumber(command.Phone);
+        Role = new RoleType(command.Role);
+    }
+    
     
     public int Id { get; }
     public PersonName Name { get; private set; }

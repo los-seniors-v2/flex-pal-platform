@@ -1,6 +1,13 @@
 
+using FlexPalPlatform.API.Profiles.Application.Internal.CommandServices;
+using FlexPalPlatform.API.Profiles.Application.Internal.QueryServices;
+using FlexPalPlatform.API.Profiles.Domain.Repositories;
+using FlexPalPlatform.API.Profiles.Domain.Services;
+using FlexPalPlatform.API.Profiles.Infrastructure.Persistence.EFC.Repositories;
+using FlexPalPlatform.API.Shared.Domain.Repositories;
 using FlexPalPlatform.API.Shared.Infrastructure.Interfaces.ASP.Configuration;
 using FlexPalPlatform.API.Shared.Infrastructure.Persistence.EFC.Configuration;
+using FlexPalPlatform.API.Shared.Infrastructure.Persistence.EFC.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -54,6 +61,11 @@ builder.Services.AddSwaggerGen(
 // Configure Dependency Injection
 
 // Shared Bounded Context Injection Configuration
+builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+//Bounded Context Profile Injection Configuration
+builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
+builder.Services.AddScoped<IProfileCommandService,ProfileCommandService>();
+builder.Services.AddScoped<IProfileQueryService,ProfileQueryService>();
 
 var app = builder.Build();
 
