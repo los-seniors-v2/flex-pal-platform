@@ -31,8 +31,10 @@ public partial class Profile
     public string FullName => Name.FullName;
     
     public string EmailAddress => Email.Address;
+
+    public string PhoneNumber => Phone.Number;
     
     public string RoleType => Role.Role;
     
-    public string PhoneNumber => Phone.Number;
+    
 }
