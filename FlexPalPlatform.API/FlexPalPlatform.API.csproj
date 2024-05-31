@@ -17,4 +17,10 @@
         <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="iam\Domain\Model\ValueObjects\" />
+      <Folder Include="iam\Infrastructure\Persistence\EFC\Repositories\" />
+      <Folder Include="iam\Interfaces\" />
+    </ItemGroup>
+
 </Project>
