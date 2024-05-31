@@ -22,4 +22,27 @@ public class ProfileCommandService(IProfileRepository profileRepository, IUnitOf
             return null;
         }
     }
+
+    public async Task<Profile?> Handle(UpdateProfileCommand command)
+    {
+        try
+        {
+            var profile = await profileRepository.FindByIdAsync(command.Id);
+            if (profile == null)
+            {
+                Console.WriteLine($"Profile with id {command.Id} not found.");
+                return null;
+            }
+            profile.Update(command);
+
+            await unitOfWork.CompleteAsync();
+
+            return profile;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"An error occurred while updating the profile: {e.Message}");
+            return null;
+        }
+    }
 }

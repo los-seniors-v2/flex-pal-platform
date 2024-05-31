@@ -41,5 +41,24 @@ public class ProfilesController(IProfileCommandService profileCommandService,IPr
         var profileResources = profiles.Select(ProfileResourceFromEntityAssembler.ToResourceFromEntity);
         return Ok(profileResources);
     }
-    
+
+    [HttpPut("{profileId:int}")]
+    public async Task<IActionResult> UpdateProfile(int profileId, UpdateProfileResource resource)
+    {
+        if (profileId != resource.Id)
+        {
+            return BadRequest("Profile ID in the URL and in the resource do not match.");
+        }
+
+        var updateProfileCommand = UpdateProfileCommandFromResourceAssembler.ToCommandFromResource(resource);
+        var updatedProfile = await profileCommandService.Handle(updateProfileCommand);
+
+        if (updatedProfile == null)
+        {
+            return NotFound();
+        }
+
+        var profileResource = ProfileResourceFromEntityAssembler.ToResourceFromEntity(updatedProfile);
+        return Ok(profileResource);
+    }
 }

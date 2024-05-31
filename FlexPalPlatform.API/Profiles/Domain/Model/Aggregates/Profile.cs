@@ -33,7 +33,7 @@ public partial class Profile
     
     public int Id { get; }
     public PersonName Name { get; private set; }
-    public EmailAddress Email { get;private set; }
+    public EmailAddress Email { get; private set; }
     public RoleType Role { get;private set; }
     
     public PhoneNumber Phone { get; private set; }
@@ -46,5 +46,10 @@ public partial class Profile
     
     public string RoleType => Role.Role;
     
+    public void Update(UpdateProfileCommand command)
+    {
+        Email = new EmailAddress(command.Email);
+        Phone = new PhoneNumber(command.Phone);
+    }
     
 }
