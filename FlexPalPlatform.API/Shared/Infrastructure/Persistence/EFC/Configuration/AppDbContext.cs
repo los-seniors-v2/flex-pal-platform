@@ -50,6 +50,8 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
                 n.WithOwner().HasForeignKey("Id");
                 n.Property(p=>p.Role).HasColumnName("RoleType");
             });
+        builder.Entity<Profile>().Property(p => p.Weight);
+        builder.Entity<Profile>().Property(p => p.Height);
         
         // Apply SnakeCase Naming Convention
        builder.UseSnakeCaseWithPluralizedTableNamingConvention();   

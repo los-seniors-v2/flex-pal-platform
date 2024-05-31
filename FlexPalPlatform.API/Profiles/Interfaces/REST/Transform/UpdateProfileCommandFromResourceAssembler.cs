@@ -7,6 +7,6 @@ public static class UpdateProfileCommandFromResourceAssembler
 {
     public static UpdateProfileCommand ToCommandFromResource(UpdateProfileResource resource)
     {
-        return new UpdateProfileCommand(resource.Id,resource.Email, resource.Phone);
+        return new UpdateProfileCommand(resource.Id,resource.Email,resource.Weigth ,resource.Heigth,resource.Phone);
     }
 }
