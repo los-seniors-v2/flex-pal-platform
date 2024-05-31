@@ -46,7 +46,7 @@ builder.Services.AddSwaggerGen(
             Version = "v1",
             Description = "FlexPal API",
             TermsOfService = new Uri("https://flexpal.com/tos"),
-            Contact = new OpenApiContact{ Name = "ACME Learning Center", Email = "contact@acme.com" },
+            Contact = new OpenApiContact{ Name = "FLEX PAL", Email = "contact@flexpal.com" },
             License = new OpenApiLicense { Name = "Apache 2.0", Url = new Uri("https://www.apache.org/licenses/LICENSE-2.0.html")},
         });
     });
