@@ -19,8 +19,6 @@
 
     <ItemGroup>
       <Folder Include="iam\Domain\Model\ValueObjects\" />
-      <Folder Include="iam\Infrastructure\Persistence\EFC\Repositories\" />
-      <Folder Include="iam\Interfaces\" />
     </ItemGroup>
 
 </Project>

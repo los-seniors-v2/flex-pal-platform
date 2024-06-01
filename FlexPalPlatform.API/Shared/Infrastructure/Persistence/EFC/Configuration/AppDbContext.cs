@@ -1,5 +1,6 @@
 ﻿
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
+using FlexPalPlatform.API.iam.Domain.Model.Aggregates;
 using FlexPalPlatform.API.Profiles.Domain.Model.Aggregates;
 using FlexPalPlatform.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,14 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         base.OnModelCreating(builder);
         
         // Publishing Context
+        
+        //Users Context
+        builder.Entity<User>().ToTable("Users");
+        builder.Entity<User>().HasKey(u=>u.Id);
+        builder.Entity<User>().Property(u=>u.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<User>().Property(u=>u.Username).IsRequired();
+        builder.Entity<User>().Property(u=>u.Password).IsRequired();
+        builder.Entity<User>().Property(u=>u.Role).IsRequired();
         
         //Profiles Context
         builder.Entity<Profile>().HasKey(p=>p.Id);

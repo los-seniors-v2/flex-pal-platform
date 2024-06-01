@@ -1,9 +1,17 @@
 
+using FlexPalPlatform.API.iam.Application.Internal.CommandServices;
+using FlexPalPlatform.API.iam.Application.Internal.OutboundServices.ACL;
+using FlexPalPlatform.API.iam.Application.Internal.QueryServices;
+using FlexPalPlatform.API.iam.Domain.Repositories;
+using FlexPalPlatform.API.iam.Domain.Services;
+using FlexPalPlatform.API.iam.Infrastructure.Persistence.EFC.Repositories;
 using FlexPalPlatform.API.Profiles.Application.Internal.CommandServices;
 using FlexPalPlatform.API.Profiles.Application.Internal.QueryServices;
 using FlexPalPlatform.API.Profiles.Domain.Repositories;
 using FlexPalPlatform.API.Profiles.Domain.Services;
 using FlexPalPlatform.API.Profiles.Infrastructure.Persistence.EFC.Repositories;
+using FlexPalPlatform.API.Profiles.Interfaces.ACL.Services;
+using FlexPalPlatform.API.Profiles.Interfaces.ACL.Services.Services;
 using FlexPalPlatform.API.Shared.Domain.Repositories;
 using FlexPalPlatform.API.Shared.Infrastructure.Interfaces.ASP.Configuration;
 using FlexPalPlatform.API.Shared.Infrastructure.Persistence.EFC.Configuration;
@@ -66,6 +74,13 @@ builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<IProfileCommandService,ProfileCommandService>();
 builder.Services.AddScoped<IProfileQueryService,ProfileQueryService>();
+builder.Services.AddScoped<IProfilesContextFacade,ProfilesContextFacade>();
+
+//Bounded Context User Injection Configuration
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserCommandService,UserCommandService>();
+builder.Services.AddScoped<IUserQueryService,UserQueryService>();
+builder.Services.AddScoped<IExternalProfileService, ExternalProfileService>();
 
 var app = builder.Build();
 
