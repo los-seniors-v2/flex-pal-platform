@@ -1,4 +1,5 @@
 
+using System.Text;
 using FlexPalPlatform.API.iam.Application.Internal.CommandServices;
 using FlexPalPlatform.API.iam.Application.Internal.OutboundServices.ACL;
 using FlexPalPlatform.API.iam.Application.Internal.QueryServices;
@@ -16,13 +17,29 @@ using FlexPalPlatform.API.Shared.Domain.Repositories;
 using FlexPalPlatform.API.Shared.Infrastructure.Interfaces.ASP.Configuration;
 using FlexPalPlatform.API.Shared.Infrastructure.Persistence.EFC.Configuration;
 using FlexPalPlatform.API.Shared.Infrastructure.Persistence.EFC.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Add services to the container.*
+var configuration = builder.Configuration;
+var jwtSecret = builder.Configuration["Jwt:Secret"];
+builder.Services.AddSingleton(jwtSecret);
+//Configuration JWT *
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"])),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
 // Add Configuration for Routing
 
 builder.Services.AddControllers( options => options.Conventions.Add(new KebabCaseRouteNamingConvention()));

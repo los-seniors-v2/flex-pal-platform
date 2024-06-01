@@ -49,4 +49,15 @@ public class UsersController(IUserCommandService userCommandService, IUserQueryS
         var userResource = UserResourceFromEntityAssembler.ToResourceFromEntity(user);
         return CreatedAtAction(nameof(GetUserById), new { userId = userResource.Id }, userResource);
     }
+    
+    //Login
+    [HttpPost("login")]
+    public async Task<IActionResult> LoginUser([FromBody] LoginUserResource resource)
+    {
+        var loginUserCommand = new LoginUserCommand(resource.UserName, resource.Password);
+        var token = await userCommandService.Handle(loginUserCommand);
+        if (token == null) return Unauthorized();
+        return Ok(new { token });
+    }
+    
 }

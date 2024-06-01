@@ -5,5 +5,5 @@ namespace FlexPalPlatform.API.iam.Domain.Repositories;
 
 public interface IUserRepository: IBaseRepository<User>
 {
-    
+    Task<User?> FindByUsernameAsync(string username);
 }
