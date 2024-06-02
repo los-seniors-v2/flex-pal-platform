@@ -1,5 +1,7 @@
 ﻿namespace FlexPalPlatform.API.Profiles.Domain.Model.ValueObjects;
-
+/// <summary>
+/// Value object representing a person's name.
+/// </summary>
 public record PersonName(string FirstName, string LastName)
 {
     public PersonName() : this(string.Empty, string.Empty)

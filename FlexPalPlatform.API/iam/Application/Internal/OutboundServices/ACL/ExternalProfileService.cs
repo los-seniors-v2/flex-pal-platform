@@ -1,4 +1,5 @@
-﻿using FlexPalPlatform.API.Profiles.Interfaces.ACL.Services;
+﻿using FlexPalPlatform.API.Profiles.Interfaces.ACL;
+using FlexPalPlatform.API.Profiles.Interfaces.ACL.Services;
 
 namespace FlexPalPlatform.API.iam.Application.Internal.OutboundServices.ACL;
 

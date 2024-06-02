@@ -15,7 +15,7 @@ namespace FlexPalPlatform.API.iam.Interfaces.REST;
 
 public class UsersController(IUserCommandService userCommandService, IUserQueryService userQueryService): ControllerBase
 {
-    //Prubea crea perfil
+    //Prueba crea perfil
     [HttpPost]
     public async Task<IActionResult> CreateUser(CreateUserResource resource)
     {

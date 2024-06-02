@@ -60,8 +60,8 @@ public partial class Profile
     {
         Email = new EmailAddress(command.Email);
         Phone = new PhoneNumber(command.Phone);
-        this.Height = command.Heigth;
-        this.Weight = command.Weigth;
+        this.Height = command.Height;
+        this.Weight = command.Weight;
     }
     
 }
