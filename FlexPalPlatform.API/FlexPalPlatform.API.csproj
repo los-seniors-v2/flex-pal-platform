@@ -21,17 +21,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="counseling\Application\CommandServices\" />
       <Folder Include="counseling\Application\OutboundServices\" />
       <Folder Include="counseling\Application\QueryServices\" />
-      <Folder Include="counseling\Domain\Model\Aggregates\" />
-      <Folder Include="counseling\Domain\Model\Commands\" />
-      <Folder Include="counseling\Domain\Model\Queries\" />
       <Folder Include="counseling\Domain\Model\ValueObjects\" />
-      <Folder Include="counseling\Domain\Repositories\" />
-      <Folder Include="counseling\Domain\Services\" />
-      <Folder Include="counseling\Infraestructure\Persistence\EFC\Repositories\" />
-      <Folder Include="counseling\Interfaces\REST\Resources\" />
       <Folder Include="counseling\Interfaces\REST\Transform\" />
       <Folder Include="iam\Domain\Model\ValueObjects\" />
     </ItemGroup>
