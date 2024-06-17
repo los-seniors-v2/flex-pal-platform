@@ -16,7 +16,7 @@ public class UserCommandService(IUserRepository userRepository, ITokenService to
         if (userRepository.ExistsByUsername(command.Username))
             throw new Exception($"Username {command.Username} already exists.");
         var hashedPassword = hashingService.HashPassword(command.Password);
-        var user = new User(command.Username, hashedPassword);
+        var user = new User(command.Username, hashedPassword, command.Role);
         try
         {
             await userRepository.AddAsync(user);
