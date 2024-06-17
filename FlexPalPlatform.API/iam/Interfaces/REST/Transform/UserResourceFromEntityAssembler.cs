@@ -3,10 +3,10 @@ using FlexPalPlatform.API.iam.Interfaces.REST.Resources;
 
 namespace FlexPalPlatform.API.iam.Interfaces.REST.Transform;
 
-public interface UserResourceFromEntityAssembler
+public static class UserResourceFromEntityAssembler
 {
     public static UserResource ToResourceFromEntity(User entity)
     {
-        return new UserResource( entity.Id, entity.Username, entity.Role);
+        return new UserResource(entity.Id, entity.Username);
     }
 }

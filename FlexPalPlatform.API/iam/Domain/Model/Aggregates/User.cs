@@ -1,34 +1,28 @@
 ﻿using System.Security.Cryptography;
+using System.Text.Json.Serialization;
 using FlexPalPlatform.API.iam.Domain.Model.Commands;
 
 namespace FlexPalPlatform.API.iam.Domain.Model.Aggregates;
 
-public partial class User
+public class User(string username, string passwordHash)
 {
     public int Id { get; private set; }
-    public string Username { get; private set; }
-    public string Password { get; set; }
+    public string Username { get; private set; } = username;
+    [JsonIgnore] public string PasswordHash { get; private set; } = passwordHash;
     public string Role { get; private set; }
     
-    public User()
+    public User() : this(string.Empty, string.Empty)
     {
-        this.Username = string.Empty;
-        this.Password = string.Empty;
-        this.Role = string.Empty;
     }
-
-    public User(CreateUserCommand command)
+   
+    public User UpdateUsername(string username)
     {
-        this.Username = command.Username;
-        this.Password = command.Password;
-        this.Role = command.Role;
+        Username = username;
+        return this;
     }
-    public bool VerifyPassword(string password)
+    public User UpdatePasswordHash(string passwordHash)
     {
-        return BCrypt.Net.BCrypt.Verify(password, this.Password);
-    }
-    public static string EncryptPassword(string password)
-    {
-        return BCrypt.Net.BCrypt.HashPassword(password);
+        PasswordHash = passwordHash;
+        return this;
     }
 }

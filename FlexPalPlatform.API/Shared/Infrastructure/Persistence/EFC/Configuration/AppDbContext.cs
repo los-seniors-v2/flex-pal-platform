@@ -27,7 +27,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<User>().HasKey(u=>u.Id);
         builder.Entity<User>().Property(u=>u.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<User>().Property(u=>u.Username).IsRequired();
-        builder.Entity<User>().Property(u=>u.Password).IsRequired();
+        builder.Entity<User>().Property(u=>u.PasswordHash).IsRequired();
         builder.Entity<User>().Property(u=>u.Role).IsRequired();
         
         //Profiles Context

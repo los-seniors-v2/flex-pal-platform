@@ -1,11 +1,15 @@
 
 using System.Text;
 using FlexPalPlatform.API.iam.Application.Internal.CommandServices;
-using FlexPalPlatform.API.iam.Application.Internal.OutboundServices.ACL;
+using FlexPalPlatform.API.iam.Application.Internal.OutboundServices;
 using FlexPalPlatform.API.iam.Application.Internal.QueryServices;
 using FlexPalPlatform.API.iam.Domain.Repositories;
 using FlexPalPlatform.API.iam.Domain.Services;
+using FlexPalPlatform.API.iam.Infrastructure.Hashing.BCrypt.Services;
 using FlexPalPlatform.API.iam.Infrastructure.Persistence.EFC.Repositories;
+using FlexPalPlatform.API.iam.Infrastructure.Tokens.JWT.Services;
+using FlexPalPlatform.API.iam.Interfaces.ACL;
+using FlexPalPlatform.API.iam.Interfaces.ACL.Services;
 using FlexPalPlatform.API.Profiles.Application.Internal.CommandServices;
 using FlexPalPlatform.API.Profiles.Application.Internal.QueryServices;
 using FlexPalPlatform.API.Profiles.Domain.Repositories;
@@ -24,22 +28,8 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.*
-var configuration = builder.Configuration;
-var jwtSecret = builder.Configuration["Jwt:Secret"];
-builder.Services.AddSingleton(jwtSecret);
-//Configuration JWT *
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"])),
-            ValidateIssuer = false,
-            ValidateAudience = false
-        };
-    });
+
+
 // Add Configuration for Routing
 
 builder.Services.AddControllers( options => options.Conventions.Add(new KebabCaseRouteNamingConvention()));
@@ -97,7 +87,9 @@ builder.Services.AddScoped<IProfilesContextFacade,ProfilesContextFacade>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserCommandService,UserCommandService>();
 builder.Services.AddScoped<IUserQueryService,UserQueryService>();
-builder.Services.AddScoped<IExternalProfileService, ExternalProfileService>();
+builder.Services.AddScoped<ITokenService,TokenService>();
+builder.Services.AddScoped<IHashingService, HashingService>();
+builder.Services.AddScoped<IIamContextFacade, IamContextFacade>();
 
 var app = builder.Build();
 

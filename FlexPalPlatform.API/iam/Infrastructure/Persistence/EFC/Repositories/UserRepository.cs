@@ -12,6 +12,14 @@ public class UserRepository(AppDbContext context): BaseRepository<User>(context)
     {
         return await context.Set<User>().FirstOrDefaultAsync(user => user.Username == username);
     }
+    public async Task<User?> FindByRoleAsync(string role)
+    {
+        return await context.Set<User>().FirstOrDefaultAsync(user => user.Role == role);
+    }
+    public bool ExistsByUsername(string username)
+    {
+        return context.Set<User>().Any(user => user.Username == username);
+    }
 }
 
 
