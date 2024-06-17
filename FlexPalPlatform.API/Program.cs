@@ -7,6 +7,7 @@ using FlexPalPlatform.API.iam.Domain.Repositories;
 using FlexPalPlatform.API.iam.Domain.Services;
 using FlexPalPlatform.API.iam.Infrastructure.Hashing.BCrypt.Services;
 using FlexPalPlatform.API.iam.Infrastructure.Persistence.EFC.Repositories;
+using FlexPalPlatform.API.iam.Infrastructure.Tokens.JWT.Configuration;
 using FlexPalPlatform.API.iam.Infrastructure.Tokens.JWT.Services;
 using FlexPalPlatform.API.iam.Interfaces.ACL;
 using FlexPalPlatform.API.iam.Interfaces.ACL.Services;
@@ -28,7 +29,8 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// Configurar TokenSettings
+builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
 
 // Add Configuration for Routing
 
