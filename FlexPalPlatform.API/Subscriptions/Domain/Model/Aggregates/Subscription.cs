@@ -34,7 +34,6 @@ public partial class Subscription
     public EndDate EndDate { get; private set; }
     public MemberStatus Status { get; private set; }
     
-
     public DateTime SubscriptionStartDate => StartDate.Value;
     public DateTime SubscriptionEndDate => EndDate.Value;
     public string SubscriptionStatus => Status.IsActive ? "Active" : "Inactive";

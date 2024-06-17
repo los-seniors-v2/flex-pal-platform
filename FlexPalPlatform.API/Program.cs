@@ -8,6 +8,11 @@ using FlexPalPlatform.API.Shared.Domain.Repositories;
 using FlexPalPlatform.API.Shared.Infrastructure.Interfaces.ASP.Configuration;
 using FlexPalPlatform.API.Shared.Infrastructure.Persistence.EFC.Configuration;
 using FlexPalPlatform.API.Shared.Infrastructure.Persistence.EFC.Repositories;
+using FlexPalPlatform.API.Subscriptions.Application.Internal.CommandServices;
+using FlexPalPlatform.API.Subscriptions.Application.Internal.QueryServices;
+using FlexPalPlatform.API.Subscriptions.Domain.Model.Repositories;
+using FlexPalPlatform.API.Subscriptions.Domain.Model.Services;
+using FlexPalPlatform.API.Subscriptions.Infrastructure.Persistence.EFC.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -67,6 +72,10 @@ builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<IProfileCommandService,ProfileCommandService>();
 builder.Services.AddScoped<IProfileQueryService,ProfileQueryService>();
 
+//Bounded Context Subscription Injection Configuration
+builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+builder.Services.AddScoped<ISubscriptionCommandService, SubscriptionCommandService>();
+builder.Services.AddScoped<ISubscriptionQueryService, SubscriptionQueryService>();
 var app = builder.Build();
 
 // Verify Database Objects are Created
