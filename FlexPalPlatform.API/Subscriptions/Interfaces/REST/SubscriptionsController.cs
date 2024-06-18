@@ -18,7 +18,10 @@ public class SubscriptionsController (ISubscriptionCommandService subscriptionCo
     {
         var createSubscriptionCommand = CreateSubscriptionCommandFromResourceAssembler.ToCommandFromResource(resource);
         var subscription = await subscriptionCommandService.Handle(createSubscriptionCommand);
-        if (subscription is null) return BadRequest();
+        if (subscription is null)
+        {
+            return BadRequest("Subscription could not be created. Check the server logs for more details.");
+        }
         var subscriptionResource = SubscriptionResourceFromEntityAssembler.ToResourceFromEntity(subscription);
         return CreatedAtAction(nameof(GetSubscriptionById),new {SubscriptionId=subscriptionResource.Id},subscriptionResource);
     }
