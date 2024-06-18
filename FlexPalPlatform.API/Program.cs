@@ -1,5 +1,9 @@
 
 using System.Text;
+using FlexPalPlatform.API.Counseling.Application.CommandServices;
+using FlexPalPlatform.API.Counseling.Domain.Repositories;
+using FlexPalPlatform.API.Counseling.Domain.Services;
+using FlexPalPlatform.API.Counseling.Infrastructure.Persistence.EFC.Repositories;
 using FlexPalPlatform.API.iam.Application.Internal.CommandServices;
 using FlexPalPlatform.API.iam.Application.Internal.OutboundServices;
 using FlexPalPlatform.API.iam.Application.Internal.QueryServices;
@@ -92,6 +96,12 @@ builder.Services.AddScoped<IUserQueryService,UserQueryService>();
 builder.Services.AddScoped<ITokenService,TokenService>();
 builder.Services.AddScoped<IHashingService, HashingService>();
 builder.Services.AddScoped<IIamContextFacade, IamContextFacade>();
+
+// Add Counseling context services and repositories
+builder.Services.AddScoped<IFitnessPlanRepository, FitnessPlanRepository>();
+builder.Services.AddScoped<ICoachRepository, CoachRepository>();
+builder.Services.AddScoped<IFitnessPlanService, FitnessPlanCommandService>();
+builder.Services.AddScoped<ICoachService, CoachCommandService>();
 
 var app = builder.Build();
 
