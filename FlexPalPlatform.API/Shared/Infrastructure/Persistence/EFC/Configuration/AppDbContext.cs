@@ -5,6 +5,7 @@ using FlexPalPlatform.API.Profiles.Domain.Model.Aggregates;
 using FlexPalPlatform.API.Counseling.Domain.Model.Aggregates;
 using FlexPalPlatform.API.Counseling.Domain.Model.Entities;
 using FlexPalPlatform.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
+using FlexPalPlatform.API.Subscriptions.Domain.Model.Aggregates;
 using Microsoft.EntityFrameworkCore;
 
 namespace FlexPalPlatform.API.Shared.Infrastructure.Persistence.EFC.Configuration;
@@ -117,6 +118,27 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         entity.HasOne(nm => nm.FitnessPlan)
             .WithMany(fp => fp.NutritionalMeals)
             .HasForeignKey(nm => nm.FitnessPlanId);
+    });
+    
+    // Subscription Context
+        
+    builder.Entity<Subscription>().HasKey(p=>p.Id);
+    builder.Entity<Subscription>().Property(p=>p.Id).IsRequired().ValueGeneratedOnAdd();
+    builder.Entity<Subscription>().OwnsOne(p => p.StartDate, n =>
+    {
+        n.WithOwner().HasForeignKey("Id");
+        n.Property(p => p.Value).HasColumnName("StartDate");
+    });
+    builder.Entity<Subscription>().OwnsOne(p => p.EndDate, n =>
+    {
+        n.WithOwner().HasForeignKey("Id");
+        n.Property(p => p.Value).HasColumnName("EndDate");
+    });
+    builder.Entity<Subscription>().OwnsOne(p => p.Status, n =>
+    {
+        n.WithOwner().HasForeignKey("Id");
+        n.Property(p => p.IsActive).HasColumnName("IsActive");
+        n.Property(p => p.Type).HasColumnName("Type");
     });
         // Apply SnakeCase Naming Convention
        builder.UseSnakeCaseWithPluralizedTableNamingConvention();   

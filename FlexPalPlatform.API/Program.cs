@@ -26,9 +26,12 @@ using FlexPalPlatform.API.Shared.Domain.Repositories;
 using FlexPalPlatform.API.Shared.Infrastructure.Interfaces.ASP.Configuration;
 using FlexPalPlatform.API.Shared.Infrastructure.Persistence.EFC.Configuration;
 using FlexPalPlatform.API.Shared.Infrastructure.Persistence.EFC.Repositories;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using FlexPalPlatform.API.Subscriptions.Application.Internal.CommandServices;
+using FlexPalPlatform.API.Subscriptions.Application.Internal.QueryServices;
+using FlexPalPlatform.API.Subscriptions.Domain.Model.Repositories;
+using FlexPalPlatform.API.Subscriptions.Domain.Model.Services;
+using FlexPalPlatform.API.Subscriptions.Infrastructure.Persistence.EFC.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -74,7 +77,7 @@ builder.Services.AddSwaggerGen(
             Version = "v1",
             Description = "FlexPal API",
             TermsOfService = new Uri("https://flexpal.com/tos"),
-            Contact = new OpenApiContact{ Name = "FLEX PAL", Email = "contact@flexpal.com" },
+            Contact = new OpenApiContact{ Name = "ACME Learning Center", Email = "contact@acme.com" },
             License = new OpenApiLicense { Name = "Apache 2.0", Url = new Uri("https://www.apache.org/licenses/LICENSE-2.0.html")},
         });
     });
@@ -103,6 +106,10 @@ builder.Services.AddScoped<ICoachRepository, CoachRepository>();
 builder.Services.AddScoped<IFitnessPlanService, FitnessPlanCommandService>();
 builder.Services.AddScoped<ICoachService, CoachCommandService>();
 
+//Bounded Context Subscription Injection Configuration
+builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+builder.Services.AddScoped<ISubscriptionCommandService, SubscriptionCommandService>();
+builder.Services.AddScoped<ISubscriptionQueryService, SubscriptionQueryService>();
 var app = builder.Build();
 
 // Verify Database Objects are Created
