@@ -35,9 +35,14 @@ builder.Services.AddSingleton(jwtSecret);
 // Add CORS Policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllPolicy", policy => policy.AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader());
+    options.AddPolicy("AllowSpecificOrigin",
+        builder =>
+        {
+            builder
+                .WithOrigins("http://localhost:5173")
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
 });
 //Configuration JWT *
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
