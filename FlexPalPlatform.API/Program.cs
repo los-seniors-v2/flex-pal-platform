@@ -32,6 +32,18 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 var jwtSecret = builder.Configuration["Jwt:Secret"];
 builder.Services.AddSingleton(jwtSecret);
+// Add CORS services in ConfigureServices
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder =>
+        {
+            builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+});
 //Configuration JWT *
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -109,6 +121,8 @@ builder.Services.AddScoped<ICoachRepository, CoachRepository>();
 builder.Services.AddScoped<IFitnessPlanService, FitnessPlanCommandService>();
 builder.Services.AddScoped<ICoachService, CoachCommandService>();
 var app = builder.Build();
+// Use CORS in Configure
+app.UseCors("AllowAllOrigins");
 
 // Verify Database Objects are Created
 using (var scope = app.Services.CreateScope())
@@ -124,21 +138,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-// Add CORS services in ConfigureServices
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAllOrigins",
-        builder =>
-        {
-            builder
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-        });
-});
 
-// Use CORS in Configure
-app.UseCors("AllowAllOrigins");
+
 
 app.UseHttpsRedirection();
 
