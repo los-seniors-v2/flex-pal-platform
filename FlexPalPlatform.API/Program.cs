@@ -32,17 +32,12 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 var jwtSecret = builder.Configuration["Jwt:Secret"];
 builder.Services.AddSingleton(jwtSecret);
-// Add CORS services in ConfigureServices
+// Add CORS Policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins",
-        builder =>
-        {
-            builder
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-        });
+    options.AddPolicy("AllowAllPolicy", policy => policy.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
 });
 //Configuration JWT *
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -122,7 +117,7 @@ builder.Services.AddScoped<IFitnessPlanService, FitnessPlanCommandService>();
 builder.Services.AddScoped<ICoachService, CoachCommandService>();
 var app = builder.Build();
 // Use CORS in Configure
-app.UseCors("AllowAllOrigins");
+app.UseCors("AllowAllPolicy");
 
 // Verify Database Objects are Created
 using (var scope = app.Services.CreateScope())
