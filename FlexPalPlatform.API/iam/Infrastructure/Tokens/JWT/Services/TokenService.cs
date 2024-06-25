@@ -15,11 +15,10 @@ public class TokenService(IOptions<TokenSettings> tokenSettings) : ITokenService
     
     public string GenerateToken(User user)
     {
-        if (user == null) throw new ArgumentNullException(nameof(user));
-        if (string.IsNullOrEmpty(user.Username)) throw new ArgumentException("Username cannot be null or empty.", nameof(user.Username));
-        if (string.IsNullOrEmpty(user.Id.ToString())) throw new ArgumentException("User ID cannot be null or empty.", nameof(user.Id));
-        if (string.IsNullOrEmpty(_tokenSettings.Secret)) throw new ArgumentException("Token secret cannot be null or empty.", nameof(_tokenSettings.Secret));
-            
+        if (user == null || user.PasswordHash == null)
+        {
+            throw new ArgumentNullException(nameof(user), "User or one of its properties is null");
+        }
         var secret = _tokenSettings.Secret;
         var key = Encoding.ASCII.GetBytes(secret);
         var tokenDescriptor = new SecurityTokenDescriptor

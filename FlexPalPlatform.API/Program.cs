@@ -11,6 +11,7 @@ using FlexPalPlatform.API.iam.Domain.Repositories;
 using FlexPalPlatform.API.iam.Domain.Services;
 using FlexPalPlatform.API.iam.Infrastructure.Hashing.BCrypt.Services;
 using FlexPalPlatform.API.iam.Infrastructure.Persistence.EFC.Repositories;
+using FlexPalPlatform.API.iam.Infrastructure.Pipeline.Middleware.Extensions;
 using FlexPalPlatform.API.iam.Infrastructure.Tokens.JWT.Configuration;
 using FlexPalPlatform.API.iam.Infrastructure.Tokens.JWT.Services;
 using FlexPalPlatform.API.iam.Interfaces.ACL;
@@ -147,7 +148,7 @@ builder.Services.AddScoped<IProfileQueryService,ProfileQueryService>();
 builder.Services.AddScoped<IProfilesContextFacade,ProfilesContextFacade>();
 
 // TokenSettings Configuration
-builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
+builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("Jwt"));
 //Bounded Context User Injection Configuration
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserCommandService,UserCommandService>();
@@ -180,7 +181,8 @@ if (app.Environment.IsDevelopment())
 
 // Use CORS in Configure
 app.UseCors("AllowedAllPolicy");
-
+// Add Middleware for Request Authorization
+app.UseRequestAuthorization();
 
 app.UseHttpsRedirection();
 

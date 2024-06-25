@@ -23,11 +23,7 @@ public class AppDbContext : DbContext
 {
     base.OnModelCreating(builder);
 
-    // IAM Context
-    builder.Entity<User>().HasKey(u => u.Id);
-    builder.Entity<User>().Property(u => u.Id).IsRequired().ValueGeneratedOnAdd();
-    builder.Entity<User>().Property(u => u.Username).IsRequired();
-    builder.Entity<User>().Property(u => u.PasswordHash).IsRequired();
+    
 
     // Profiles Context
     builder.Entity<Profile>().HasKey(p => p.Id);
@@ -55,6 +51,12 @@ public class AppDbContext : DbContext
     });
     builder.Entity<Profile>().Property(p => p.Weight);
     builder.Entity<Profile>().Property(p => p.Height);
+    // IAM Context
+    builder.Entity<User>().HasKey(u => u.Id);
+    builder.Entity<User>().Property(u => u.Id).IsRequired().ValueGeneratedOnAdd();
+    builder.Entity<User>().Property(u => u.Username).IsRequired();
+    builder.Entity<User>().Property(u => u.PasswordHash).IsRequired();
+    builder.Entity<User>().Property(u => u.Role).IsRequired();
 
     // FitnessPlans Context
         builder.Entity<FitnessPlan>().ToTable("FitnessPlans");
