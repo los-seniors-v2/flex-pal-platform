@@ -100,6 +100,7 @@ builder.Services.AddScoped<IProfileCommandService,ProfileCommandService>();
 builder.Services.AddScoped<IProfileQueryService,ProfileQueryService>();
 builder.Services.AddScoped<IProfilesContextFacade,ProfilesContextFacade>();
 
+
 //Bounded Context User Injection Configuration
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserCommandService,UserCommandService>();
@@ -118,6 +119,10 @@ builder.Services.AddScoped<ICoachService, CoachCommandService>();
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 builder.Services.AddScoped<ISubscriptionCommandService, SubscriptionCommandService>();
 builder.Services.AddScoped<ISubscriptionQueryService, SubscriptionQueryService>();
+
+// Weight Loss Service
+builder.Services.AddScoped<IWeightLossService, WeightLossCommandService>();
+
 var app = builder.Build();
 
 // Verify Database Objects are Created
