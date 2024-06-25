@@ -5,11 +5,15 @@ using FlexPalPlatform.API.Counseling.Domain.Repositories;
 using FlexPalPlatform.API.Counseling.Domain.Services;
 using FlexPalPlatform.API.Counseling.Infrastructure.Persistence.EFC.Repositories;
 using FlexPalPlatform.API.iam.Application.Internal.CommandServices;
-using FlexPalPlatform.API.iam.Application.Internal.OutboundServices.ACL;
+using FlexPalPlatform.API.iam.Application.Internal.OutboundServices;
 using FlexPalPlatform.API.iam.Application.Internal.QueryServices;
 using FlexPalPlatform.API.iam.Domain.Repositories;
 using FlexPalPlatform.API.iam.Domain.Services;
+using FlexPalPlatform.API.iam.Infrastructure.Hashing.BCrypt.Services;
 using FlexPalPlatform.API.iam.Infrastructure.Persistence.EFC.Repositories;
+using FlexPalPlatform.API.iam.Infrastructure.Tokens.JWT.Services;
+using FlexPalPlatform.API.iam.Interfaces.ACL;
+using FlexPalPlatform.API.iam.Interfaces.ACL.Services;
 using FlexPalPlatform.API.Profiles.Application.Internal.CommandServices;
 using FlexPalPlatform.API.Profiles.Application.Internal.QueryServices;
 using FlexPalPlatform.API.Profiles.Domain.Repositories;
@@ -145,7 +149,10 @@ builder.Services.AddScoped<IProfilesContextFacade,ProfilesContextFacade>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserCommandService,UserCommandService>();
 builder.Services.AddScoped<IUserQueryService,UserQueryService>();
-builder.Services.AddScoped<IExternalProfileService, ExternalProfileService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IHashingService, HashingService>();
+builder.Services.AddScoped<IIamContextFacade, IamContextFacade>();
+
 // Add Counseling context services and repositories
 builder.Services.AddScoped<IFitnessPlanRepository, FitnessPlanRepository>();
 builder.Services.AddScoped<ICoachRepository, CoachRepository>();

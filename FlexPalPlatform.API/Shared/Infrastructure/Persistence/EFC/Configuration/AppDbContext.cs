@@ -23,13 +23,11 @@ public class AppDbContext : DbContext
 {
     base.OnModelCreating(builder);
 
-    // Users Context
-    builder.Entity<User>().ToTable("Users");
+    // IAM Context
     builder.Entity<User>().HasKey(u => u.Id);
     builder.Entity<User>().Property(u => u.Id).IsRequired().ValueGeneratedOnAdd();
     builder.Entity<User>().Property(u => u.Username).IsRequired();
-    builder.Entity<User>().Property(u => u.Password).IsRequired();
-    builder.Entity<User>().Property(u => u.Role).IsRequired();
+    builder.Entity<User>().Property(u => u.PasswordHash).IsRequired();
 
     // Profiles Context
     builder.Entity<Profile>().HasKey(p => p.Id);
