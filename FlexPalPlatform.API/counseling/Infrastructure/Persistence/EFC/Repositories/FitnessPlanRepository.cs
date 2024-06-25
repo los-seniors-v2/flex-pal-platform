@@ -6,12 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FlexPalPlatform.API.Counseling.Infrastructure.Persistence.EFC.Repositories;
 
-public class FitnessPlanRepository : BaseRepository<FitnessPlan>, IFitnessPlanRepository
+public class FitnessPlanRepository(AppDbContext context) : BaseRepository<FitnessPlan>(context), IFitnessPlanRepository
 {
-    public FitnessPlanRepository(AppDbContext context) : base(context)
-    {
-    }
-
     public async Task<FitnessPlan?> GetWithDetailsByIdAsync(int fitnessPlanId)
     {
         return await Context.Set<FitnessPlan>()

@@ -8,10 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FlexPalPlatform.API.Shared.Infrastructure.Persistence.EFC.Configuration;
 
-public class AppDbContext : DbContext
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
         base.OnConfiguring(builder);
@@ -24,6 +22,7 @@ public class AppDbContext : DbContext
     base.OnModelCreating(builder);
 
     // Users Context
+    
     builder.Entity<User>().ToTable("Users");
     builder.Entity<User>().HasKey(u => u.Id);
     builder.Entity<User>().Property(u => u.Id).IsRequired().ValueGeneratedOnAdd();
@@ -32,6 +31,7 @@ public class AppDbContext : DbContext
     builder.Entity<User>().Property(u => u.Role).IsRequired();
 
     // Profiles Context
+    
     builder.Entity<Profile>().HasKey(p => p.Id);
     builder.Entity<Profile>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
     builder.Entity<Profile>().OwnsOne(p => p.Name, n =>
@@ -59,6 +59,7 @@ public class AppDbContext : DbContext
     builder.Entity<Profile>().Property(p => p.Height);
 
     // FitnessPlans Context
+    
         builder.Entity<FitnessPlan>().ToTable("FitnessPlans");
         builder.Entity<FitnessPlan>(entity =>
         {
@@ -113,6 +114,7 @@ public class AppDbContext : DbContext
     });
 
     // Apply SnakeCase Naming Convention
+    
     builder.UseSnakeCaseWithPluralizedTableNamingConvention();
 }
 

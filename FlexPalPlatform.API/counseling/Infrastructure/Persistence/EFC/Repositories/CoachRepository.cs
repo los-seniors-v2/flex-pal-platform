@@ -6,12 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FlexPalPlatform.API.Counseling.Infrastructure.Persistence.EFC.Repositories;
 
-public class CoachRepository : BaseRepository<Coach>, ICoachRepository
+public class CoachRepository(AppDbContext context) : BaseRepository<Coach>(context), ICoachRepository
 {
-    public CoachRepository(AppDbContext context) : base(context)
-    {
-    }
-
     public async Task<Coach?> FindByEmailAddressAsync(string email)
     {
         return await Context.Set<Coach>().FirstOrDefaultAsync(c => c.Email == email);
