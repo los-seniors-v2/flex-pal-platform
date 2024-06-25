@@ -1,35 +1,34 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FlexPalPlatform.API.counseling.Application.Internal.CommandServices;
+using FlexPalPlatform.API.counseling.Application.Internal.QueryServices;
+using Microsoft.AspNetCore.Mvc;
 using FlexPalPlatform.API.Counseling.Domain.Model.Commands;
+using FlexPalPlatform.API.Counseling.Domain.Model.Queries;
 using FlexPalPlatform.API.Counseling.Domain.Services;
 using FlexPalPlatform.API.Counseling.Interfaces.REST.Resources;
+using FlexPalPlatform.API.Counseling.Interfaces.REST.Transform;
 
 namespace FlexPalPlatform.API.Counseling.Interfaces.REST;
 
 [ApiController]
 [Route("api/v1/coaches")]
-public class CoachController : ControllerBase
+public class CoachController(CoachCommandService coachCommandService, CoachQueryService coachQueryService) : ControllerBase
 {
-    private readonly ICoachService _coachService;
-
-    public CoachController(ICoachService coachService)
-    {
-        _coachService = coachService;
-    }
-
     [HttpPost]
-    public async Task<IActionResult> CreateCoach([FromBody] CreateCoachResource resource)
+    public async Task<IActionResult> CreateCoach([FromBody] CreateCoachResource createCoachResource)
     {
-        var command = new CreateCoachCommand(resource.FirstName, resource.LastName, resource.Email, resource.Phone, resource.Knowledge);
-        var coach = await _coachService.CreateCoachAsync(command);
-        if (coach == null) return BadRequest("Unable to create coach");
-        return CreatedAtAction(nameof(GetCoachById), new { coachId = coach.Id }, coach);
+        var createCoachCommand = CreateCoachResourceFromEntityAssembler.ToCommandFromResource(createCoachResource);
+        var coach = await coachCommandService.Handle(createCoachCommand);
+        if (coach is null) return BadRequest();
+        var resource = CoachResourceFromEntityAssembler.ToResourceFromEntity(coach);
+        return CreatedAtAction(nameof(GetCoachById), new { coachId = resource.Id }, resource);
     }
 
     [HttpGet("{coachId:int}")]
-    public async Task<IActionResult> GetCoachById(int coachId)
+    public async Task<IActionResult> GetCoachById([FromRoute] int coachId)
     {
-        var coach = await _coachService.GetCoachByIdAsync(coachId);
+        var coach = await coachQueryService.Handle(new GetCoachByIdQuery(coachId));
         if (coach == null) return NotFound();
-        return Ok(coach);
+        var resource = CoachResourceFromEntityAssembler.ToResourceFromEntity(coach);
+        return Ok(resource);
     }
 }

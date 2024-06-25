@@ -1,66 +1,59 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FlexPalPlatform.API.counseling.Application.Internal.CommandServices;
+using FlexPalPlatform.API.counseling.Application.Internal.QueryServices;
+using Microsoft.AspNetCore.Mvc;
 using FlexPalPlatform.API.Counseling.Domain.Model.Commands;
 using FlexPalPlatform.API.Counseling.Domain.Model.Entities;
+using FlexPalPlatform.API.Counseling.Domain.Model.Queries;
 using FlexPalPlatform.API.Counseling.Domain.Services;
 using FlexPalPlatform.API.Counseling.Interfaces.REST.Resources;
+using FlexPalPlatform.API.Counseling.Interfaces.REST.Transform;
 
 namespace FlexPalPlatform.API.Counseling.Interfaces.REST;
 
 [ApiController]
 [Route("api/v1/fitness-plans")]
-public class FitnessPlanController : ControllerBase
+public class FitnessPlanController(FitnessPlanCommandService fitnessPlanCommandService, FitnessPlanQueryService fitnessPlanQueryService) : ControllerBase
 {
-    private readonly IFitnessPlanService _fitnessPlanService;
-
-    public FitnessPlanController(IFitnessPlanService fitnessPlanService)
-    {
-        _fitnessPlanService = fitnessPlanService;
-    }
-
     [HttpPost]
-    public async Task<IActionResult> CreateFitnessPlan([FromBody] CreateFitnessPlanResource resource)
+    public async Task<IActionResult> CreateFitnessPlan([FromBody] CreateFitnessPlanResource createFitnessPlanResource)
     {
-        var command = new CreateFitnessPlanCommand(resource.ProfileId, resource.CoachId);
-        var fitnessPlan = await _fitnessPlanService.CreateFitnessPlanAsync(command);
-        if (fitnessPlan == null)
-        {
-            return BadRequest("Unable to create fitness plan");
-        }
-        return CreatedAtAction(nameof(GetFitnessPlanById), new { fitnessPlanId = fitnessPlan.Id }, fitnessPlan);
+        var createFitnessPlanCommand = CreateFitnessPlanResourceFromEntityAssembler.ToCommandFromResource(createFitnessPlanResource);
+        var fitnessPlan = await fitnessPlanCommandService.Handle(createFitnessPlanCommand);
+        if (fitnessPlan is null) return BadRequest();
+        var resource = FitnessPlanResourceFromEntityAssembler.ToResourceFromEntity(fitnessPlan);
+        return CreatedAtAction(nameof(GetFitnessPlanById), new { fitnessPlanId = resource.Id }, resource);
     }
 
     [HttpPost("{fitnessPlanId}/routine-items")]
-    public async Task<IActionResult> AddRoutineItem(int fitnessPlanId, [FromBody] AddRoutineItemResource resource)
+    public async Task<IActionResult> AddRoutineItem([FromBody] AddRoutineItemToFitnessPlanResource addRoutineItemToFitnessPlanResource,
+        [FromRoute] int fitnessPlanId)
     {
-        var item = new RoutineItem(resource.Name, resource.Sets, resource.Reps, resource.Type, resource.RestTime);
-        bool result = await _fitnessPlanService.AddRoutineItemToFitnessPlanAsync(fitnessPlanId, item);
-        if (!result)
-        {
-            return BadRequest("Unable to add routine item");
-        }
-        return Ok();
+        var addRoutineItemToFitnessPlanCommand = AddRoutineItemToFitnessPlanCommandFromResourceAssembler
+            .ToCommandFromResource(addRoutineItemToFitnessPlanResource, fitnessPlanId);
+        var fitnessPlan = await fitnessPlanCommandService.Handle(addRoutineItemToFitnessPlanCommand);
+        if (fitnessPlan == null) return NotFound();
+        var resource = FitnessPlanResourceFromEntityAssembler.ToResourceFromEntity(fitnessPlan);
+        return CreatedAtAction(nameof(GetFitnessPlanById), new { fitnessPlanId = resource.Id }, resource);
     }
 
     [HttpPost("{fitnessPlanId}/nutritional-meals")]
-    public async Task<IActionResult> AddNutritionalMeal(int fitnessPlanId, [FromBody] AddNutritionalMealResource resource)
+    public async Task<IActionResult> AddNutritionalMeal([FromBody] AddNutritionMealToFitnessPlanResource addNutritionMealToFitnessPlanResource,
+        [FromRoute] int fitnessPlanId)
     {
-        var meal = new NutritionalMeal(resource.Name, resource.Weight);
-        bool result = await _fitnessPlanService.AddNutritionalMealToFitnessPlanAsync(fitnessPlanId, meal);
-        if (!result)
-        {
-            return BadRequest("Unable to add nutritional meal");
-        }
-        return Ok();
+        var addNutritionalMealToFitnessPlanCommand = AddNutritionalMealCommandFromResourceAssembler
+            .ToCommandFromResource(addNutritionMealToFitnessPlanResource, fitnessPlanId);
+        var fitnessPlan = await fitnessPlanCommandService.Handle(addNutritionalMealToFitnessPlanCommand);
+        if (fitnessPlan == null) return NotFound();
+        var resource = FitnessPlanResourceFromEntityAssembler.ToResourceFromEntity(fitnessPlan);
+        return CreatedAtAction(nameof(GetFitnessPlanById), new { fitnessPlanId = resource.Id }, resource);
     }
 
     [HttpGet("{fitnessPlanId}")]
     public async Task<IActionResult> GetFitnessPlanById(int fitnessPlanId)
     {
-        var fitnessPlan = await _fitnessPlanService.GetFitnessPlanByIdAsync(fitnessPlanId);
-        if (fitnessPlan == null)
-        {
-            return NotFound();
-        }
-        return Ok(fitnessPlan);
+        var fitnessPlan = await fitnessPlanQueryService.Handle(new GetFitnessPlanByIdQuery(fitnessPlanId));
+        if (fitnessPlan == null) return NotFound();
+        var resource = FitnessPlanResourceFromEntityAssembler.ToResourceFromEntity(fitnessPlan);
+        return Ok(resource);
     }
 }
