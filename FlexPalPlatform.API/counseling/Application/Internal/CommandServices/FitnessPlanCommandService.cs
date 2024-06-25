@@ -57,4 +57,21 @@ public class FitnessPlanCommandService(IFitnessPlanRepository fitnessPlanReposit
             return null;
         }
     }
+
+    public async Task<FitnessPlan?> Handle(AddDailyExerciseToFitnessPlanCommand command)
+    {
+        var fitnessPlan = await fitnessPlanRepository.FindByIdAsync(command.FitnessPlanId);
+        if (fitnessPlan is null) throw new Exception("Fitness Plan not found");
+        fitnessPlan.AddDailyExercise(command.Name, command.State);
+        try
+        {
+            await unitOfWork.CompleteAsync();
+            return fitnessPlan;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"An error occurred while adding the daily exercise to the fitness plan: {e.Message}");
+            return null;
+        }
+    }
 }
