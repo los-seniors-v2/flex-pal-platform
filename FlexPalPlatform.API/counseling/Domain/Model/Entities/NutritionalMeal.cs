@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using FlexPalPlatform.API.Counseling.Domain.Model.Aggregates;
+using FlexPalPlatform.API.Counseling.Domain.Model.Commands;
 
 namespace FlexPalPlatform.API.Counseling.Domain.Model.Entities;
 
@@ -17,5 +18,11 @@ public class NutritionalMeal
     {
         Name = name;
         Weight = weight;
+    }
+
+    public NutritionalMeal(CreateNutritionItemCommand command)
+    {
+        Name = command.Name;
+        Weight = command.Weight;
     }
 }
