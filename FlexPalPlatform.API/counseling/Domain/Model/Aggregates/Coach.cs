@@ -1,7 +1,10 @@
-﻿namespace FlexPalPlatform.API.Counseling.Domain.Model.Aggregates;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FlexPalPlatform.API.Counseling.Domain.Model.Aggregates;
 
 public class Coach
 {
+    [Key]
     public int Id { get; private set; }
     public string FirstName { get; private set; }
     public string LastName { get; private set; }

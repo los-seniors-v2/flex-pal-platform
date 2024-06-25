@@ -7,4 +7,8 @@ public interface IBaseRepository<TEntity>
     void Update(TEntity entity);
     void Remove(TEntity entity);
     Task<IEnumerable<TEntity>> ListAsync();
+    
+    
+    
 }
+
