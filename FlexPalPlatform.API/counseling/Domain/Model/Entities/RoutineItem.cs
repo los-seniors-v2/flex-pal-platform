@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using FlexPalPlatform.API.Counseling.Domain.Model.Aggregates;
+using FlexPalPlatform.API.Counseling.Domain.Model.Commands;
 
 namespace FlexPalPlatform.API.Counseling.Domain.Model.Entities;
 
@@ -23,5 +24,14 @@ public class RoutineItem
         Reps = reps;
         Type = type;
         RestTime = restTime;
+    }
+
+    public RoutineItem(CreateRoutineItemCommand command)
+    {
+        Name = command.Name;
+        Sets = command.Sets;
+        Reps = command.Reps;
+        Type = command.Type;
+        RestTime = command.RestTime;
     }
 }
