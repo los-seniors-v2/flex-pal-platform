@@ -14,13 +14,11 @@ public class ProfilesController : ControllerBase
 {
     private readonly IProfileCommandService _profileCommandService;
     private readonly IProfileQueryService _profileQueryService;
-    private readonly IWeightLossService _weightLossService;
 
-    public ProfilesController(IProfileCommandService profileCommandService, IProfileQueryService profileQueryService, IWeightLossService weightLossService)
+    public ProfilesController(IProfileCommandService profileCommandService, IProfileQueryService profileQueryService)
     {
         _profileCommandService = profileCommandService;
         _profileQueryService = profileQueryService;
-        _weightLossService = weightLossService;
     }
 
     /// <summary>
@@ -46,7 +44,7 @@ public class ProfilesController : ControllerBase
             return StatusCode(500, "Internal server error");
         }
     }
-    
+
     /// <summary>
     /// Gets a profile by its ID.
     /// </summary>
@@ -70,7 +68,7 @@ public class ProfilesController : ControllerBase
             return StatusCode(500, "Internal server error");
         }
     }
-    
+
     /// <summary>
     /// Gets all profiles.
     /// </summary>
@@ -127,30 +125,4 @@ public class ProfilesController : ControllerBase
             return StatusCode(500, "Internal server error");
         }
     }
-    
-    /// <summary>
-    /// Gets the weight loss projection for a profile.
-    /// </summary>
-    /// <param name="profileId">The ID of the profile.</param>
-    /// <returns>A resource with the projected weight loss.</returns>
-    [HttpGet("{profileId}/weight-loss-projection")]
-    public async Task<IActionResult> GetWeightLossProjection(int profileId)
-    {
-        try
-        {
-            var projection = await _weightLossService.CalculateWeightLossAsync(profileId);
-            return Ok(projection);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred while calculating weight loss: {ex.Message}");
-            return StatusCode(500, "Internal server error");
-        }
-    }
-    
-    
-    
-     
-    }
-    
-
+}

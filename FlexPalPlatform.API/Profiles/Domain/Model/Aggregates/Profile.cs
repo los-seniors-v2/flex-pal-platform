@@ -1,5 +1,4 @@
-﻿
-using FlexPalPlatform.API.Profiles.Domain.Model.Commands;
+﻿using FlexPalPlatform.API.Profiles.Domain.Model.Commands;
 using FlexPalPlatform.API.Profiles.Domain.Model.ValueObjects;
 
 namespace FlexPalPlatform.API.Profiles.Domain.Model.Aggregates;
@@ -17,9 +16,9 @@ public partial class Profile
         Phone= new PhoneNumber();
         this.Weight= string.Empty;
         this.Height= string.Empty;
-        
+
     }
-    
+
     public Profile(string firstName, string lastName, string email,string weight,string height,string phone, string role)
     {
         Name = new PersonName(firstName, lastName);
@@ -39,23 +38,23 @@ public partial class Profile
         this.Height = command.Height;
         this.Weight = command.Weight;
     }
-    
-    
+
+
     public int Id { get; }
     public PersonName Name { get; private set; }
     public EmailAddress Email { get; private set; }
     public RoleType Role { get;private set; }
-    
+
     public PhoneNumber Phone { get; private set; }
-    
+
     public string FullName => Name.FullName;
-    
+
     public string EmailAddress => Email.Address;
 
     public string PhoneNumber => Phone.Number;
-    
+
     public string RoleType => Role.Role;
-    
+
     public void Update(UpdateProfileCommand command)
     {
         Email = new EmailAddress(command.Email);
@@ -63,5 +62,5 @@ public partial class Profile
         this.Height = command.Height;
         this.Weight = command.Weight;
     }
-    
+
 }
