@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using FlexPalPlatform.API.Counseling.Domain.Model.Commands;
+
 namespace FlexPalPlatform.API.Counseling.Domain.Model.Aggregates;
 
 public class Coach
@@ -19,5 +21,14 @@ public class Coach
         Email = email;
         Phone = phone;
         Knowledge = knowledge;
+    }
+
+    public Coach(CreateCoachCommand command)
+    {
+        FirstName = command.FirstName;
+        LastName = command.LastName;
+        Email = command.Email;
+        Phone = command.Phone;
+        Knowledge = command.Knowledge;
     }
 }
