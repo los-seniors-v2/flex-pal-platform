@@ -1,6 +1,8 @@
 
 using System.Text;
-using FlexPalPlatform.API.Counseling.Application.CommandServices;
+using FlexPalPlatform.API.counseling.Application.Internal.CommandServices;
+using FlexPalPlatform.API.counseling.Application.Internal.QueryServices;
+using FlexPalPlatform.API.counseling.Application.Internal.Services;
 using FlexPalPlatform.API.Counseling.Domain.Repositories;
 using FlexPalPlatform.API.Counseling.Domain.Services;
 using FlexPalPlatform.API.Counseling.Infrastructure.Persistence.EFC.Repositories;
@@ -93,15 +95,18 @@ builder.Services.AddCors(options =>
 // Configure Dependency Injection
 
 // Shared Bounded Context Injection Configuration
+
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
-//Bounded Context Profile Injection Configuration
+
+// Bounded Context Profile Injection Configuration
+
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<IProfileCommandService,ProfileCommandService>();
 builder.Services.AddScoped<IProfileQueryService,ProfileQueryService>();
 builder.Services.AddScoped<IProfilesContextFacade,ProfilesContextFacade>();
 
+// Bounded Context User Injection Configuration
 
-//Bounded Context User Injection Configuration
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserCommandService,UserCommandService>();
 builder.Services.AddScoped<IUserQueryService,UserQueryService>();
@@ -111,17 +116,27 @@ builder.Services.AddScoped<IIamContextFacade, IamContextFacade>();
 
 // Add Counseling context services and repositories
 builder.Services.AddScoped<IFitnessPlanRepository, FitnessPlanRepository>();
+builder.Services.AddScoped<IFitnessPlanCommandService, FitnessPlanCommandService>();
+builder.Services.AddScoped<IFitnessPlanQueryService, FitnessPlanQueryService>();
+builder.Services.AddScoped<FlexPalPlatform.API.counseling.Application.Internal.CommandServices.FitnessPlanCommandService, FlexPalPlatform.API.counseling.Application.Internal.CommandServices.FitnessPlanCommandService>();
+builder.Services.AddScoped<FlexPalPlatform.API.counseling.Application.Internal.QueryServices.FitnessPlanQueryService, FlexPalPlatform.API.counseling.Application.Internal.QueryServices.FitnessPlanQueryService>();
+
 builder.Services.AddScoped<ICoachRepository, CoachRepository>();
-builder.Services.AddScoped<IFitnessPlanService, FitnessPlanCommandService>();
-builder.Services.AddScoped<ICoachService, CoachCommandService>();
+builder.Services.AddScoped<ICoachQueryService, CoachQueryService>();
+builder.Services.AddScoped<ICoachCommandService, CoachCommandService>();
+builder.Services.AddScoped<FlexPalPlatform.API.counseling.Application.Internal.CommandServices.CoachCommandService, FlexPalPlatform.API.counseling.Application.Internal.CommandServices.CoachCommandService>();
+builder.Services.AddScoped<FlexPalPlatform.API.counseling.Application.Internal.QueryServices.CoachQueryService, FlexPalPlatform.API.counseling.Application.Internal.QueryServices.CoachQueryService>();
+
+builder.Services.AddScoped<IRoutineItemRepository, RoutineItemRepository>();
+builder.Services.AddScoped<IRoutineItemService, RoutineItemService>();
+
+builder.Services.AddScoped<INutritionalMealRepository, NutritionalMealRepository>();
+builder.Services.AddScoped<INutritionalMealService, NutritionalMealService>();
 
 //Bounded Context Subscription Injection Configuration
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 builder.Services.AddScoped<ISubscriptionCommandService, SubscriptionCommandService>();
 builder.Services.AddScoped<ISubscriptionQueryService, SubscriptionQueryService>();
-
-// Weight Loss Service
-builder.Services.AddScoped<IWeightLossService, WeightLossCommandService>();
 
 var app = builder.Build();
 
