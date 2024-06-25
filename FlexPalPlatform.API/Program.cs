@@ -35,15 +35,13 @@ builder.Services.AddSingleton(jwtSecret);
 // Add CORS Policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin",
-        builder =>
-        {
-            builder
-                .WithOrigins("http://localhost:5173")
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-        });
+    options.AddPolicy("AllowedAllPolicy",
+        policy => policy
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 });
+
 //Configuration JWT *
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -89,14 +87,47 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
     c =>
     {
-        c.SwaggerDoc("v1", new OpenApiInfo
+        c.SwaggerDoc("v1",
+            new OpenApiInfo
+            {
+                Title = "ACME.LearningCenterPlatform.API",
+                Version = "v1",
+                Description = "ACME Learning Center Platform API",
+                TermsOfService = new Uri("https://acme-learning.com/tos"),
+                Contact = new OpenApiContact
+                {
+                    Name = "ACME Studios",
+                    Email = "contact@acme.com"
+                },
+                License = new OpenApiLicense
+                {
+                    Name = "Apache 2.0",
+                    Url = new Uri("https://www.apache.org/licenses/LICENSE-2.0.html")
+                }
+            });
+        c.EnableAnnotations();
+        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
         {
-            Title   = "Flex-Pal-Platform.API",
-            Version = "v1",
-            Description = "FlexPal API",
-            TermsOfService = new Uri("https://flexpal.com/tos"),
-            Contact = new OpenApiContact{ Name = "FLEX PAL", Email = "contact@flexpal.com" },
-            License = new OpenApiLicense { Name = "Apache 2.0", Url = new Uri("https://www.apache.org/licenses/LICENSE-2.0.html")},
+            In = ParameterLocation.Header,
+            Description = "Please enter token",
+            Name = "Authorization",
+            Type = SecuritySchemeType.Http,
+            BearerFormat = "JWT",
+            Scheme = "bearer"
+        });
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Id = "Bearer",
+                        Type = ReferenceType.SecurityScheme
+                    }
+                },
+                Array.Empty<string>()
+            } 
         });
     });
 
@@ -121,8 +152,6 @@ builder.Services.AddScoped<ICoachRepository, CoachRepository>();
 builder.Services.AddScoped<IFitnessPlanService, FitnessPlanCommandService>();
 builder.Services.AddScoped<ICoachService, CoachCommandService>();
 var app = builder.Build();
-// Use CORS in Configure
-app.UseCors("AllowAllPolicy");
 
 // Verify Database Objects are Created
 using (var scope = app.Services.CreateScope())
@@ -139,6 +168,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Use CORS in Configure
+app.UseCors("AllowedAllPolicy");
 
 
 app.UseHttpsRedirection();
