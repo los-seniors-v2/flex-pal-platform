@@ -133,6 +133,10 @@ builder.Services.AddScoped<IRoutineItemService, RoutineItemService>();
 builder.Services.AddScoped<INutritionalMealRepository, NutritionalMealRepository>();
 builder.Services.AddScoped<INutritionalMealService, NutritionalMealService>();
 
+builder.Services.AddScoped<IDailyExerciseRepository, DailyExerciseRepository>();
+builder.Services.AddScoped<IDailyExerciseService, DailyExerciseService>();
+
+
 //Bounded Context Subscription Injection Configuration
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 builder.Services.AddScoped<ISubscriptionCommandService, SubscriptionCommandService>();

@@ -7,6 +7,6 @@ public class FitnessPlanResourceFromEntityAssembler
 {
     public static FitnessPlanResource ToResourceFromEntity(FitnessPlan fitnessPlan)
     {
-        return new FitnessPlanResource(fitnessPlan.Id, fitnessPlan.ProfileId, fitnessPlan.CoachId, fitnessPlan.RoutineItems, fitnessPlan.NutritionalMeals);
+        return new FitnessPlanResource(fitnessPlan.Id, fitnessPlan.ProfileId, fitnessPlan.CoachId, fitnessPlan.RoutineItems, fitnessPlan.NutritionalMeals, fitnessPlan.DailyExercises);
     }
 }

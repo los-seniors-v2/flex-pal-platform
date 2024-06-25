@@ -10,12 +10,15 @@ public class FitnessPlan
     public int CoachId { get; private set; }
     public List<RoutineItem> RoutineItems { get; private set; }
     public List<NutritionalMeal> NutritionalMeals { get; private set; }
+    
+    public List<DailyExercise> DailyExercises { get; private set; }
     public FitnessPlan(int profileId, int coachId)
     {
         ProfileId = profileId;
         CoachId = coachId;
         RoutineItems = new List<RoutineItem>();
         NutritionalMeals = new List<NutritionalMeal>();
+        DailyExercises = new List<DailyExercise>();
     }
 
     public FitnessPlan(CreateFitnessPlanCommand command)
@@ -24,6 +27,7 @@ public class FitnessPlan
         CoachId = command.CoachId;
         RoutineItems = new List<RoutineItem>();
         NutritionalMeals = new List<NutritionalMeal>();
+        DailyExercises = new List<DailyExercise>();
     }
     public void AddRoutineItem(string Name, int Sets, int Reps, string Type, int RestTime)
     {
@@ -32,5 +36,9 @@ public class FitnessPlan
     public void AddNutritionalMeal(string Name, int Weight)
     {
         NutritionalMeals.Add(new NutritionalMeal(Name, Weight));
+    }
+    public void AddDailyExercise(string Name, string State)
+    {
+        DailyExercises.Add(new DailyExercise(Name, State));
     }
 }

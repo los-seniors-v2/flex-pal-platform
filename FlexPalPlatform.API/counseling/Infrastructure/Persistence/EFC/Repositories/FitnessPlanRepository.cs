@@ -13,6 +13,7 @@ public class FitnessPlanRepository(AppDbContext context) : BaseRepository<Fitnes
         return await Context.Set<FitnessPlan>()
             .Include(fp => fp.RoutineItems)
             .Include(fp => fp.NutritionalMeals)
+            .Include(fp => fp.DailyExercises)
             .FirstOrDefaultAsync(fp => fp.Id == fitnessPlanId);
     }
 }

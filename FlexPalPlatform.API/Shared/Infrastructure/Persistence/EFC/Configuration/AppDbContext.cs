@@ -69,6 +69,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.HasOne<Profile>().WithMany().HasForeignKey(fp => fp.ProfileId).IsRequired();
             entity.HasMany(fp => fp.RoutineItems).WithOne(ri => ri.FitnessPlan).HasForeignKey(ri => ri.FitnessPlanId);
             entity.HasMany(fp => fp.NutritionalMeals).WithOne(nm => nm.FitnessPlan).HasForeignKey(nm => nm.FitnessPlanId);
+            entity.HasMany(fp => fp.DailyExercises).WithOne(de => de.FitnessPlan).HasForeignKey(de => de.FitnessPlanId);
         });
 
     // Coach Context
@@ -111,6 +112,19 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         entity.HasOne(nm => nm.FitnessPlan)
             .WithMany(fp => fp.NutritionalMeals)
             .HasForeignKey(nm => nm.FitnessPlanId);
+    });
+    
+    // DailyExercise Context
+    builder.Entity<DailyExercise>().ToTable("DailyExercises");
+    builder.Entity<DailyExercise>(entity =>
+    {
+        entity.HasKey(de => de.Id);
+        entity.Property(de => de.Id).ValueGeneratedOnAdd();
+        entity.Property(de => de.Name).IsRequired().HasMaxLength(100);
+        entity.Property(de => de.State).IsRequired().HasMaxLength(50);
+        entity.HasOne(de => de.FitnessPlan)
+            .WithMany(fp => fp.DailyExercises)
+            .HasForeignKey(de => de.FitnessPlanId);
     });
 
     // Apply SnakeCase Naming Convention

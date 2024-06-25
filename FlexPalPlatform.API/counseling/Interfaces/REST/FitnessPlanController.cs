@@ -47,6 +47,20 @@ public class FitnessPlanController(FitnessPlanCommandService fitnessPlanCommandS
         var resource = FitnessPlanResourceFromEntityAssembler.ToResourceFromEntity(fitnessPlan);
         return CreatedAtAction(nameof(GetFitnessPlanById), new { fitnessPlanId = resource.Id }, resource);
     }
+    
+    [HttpPost("{fitnessPlanId}/daily-exercises")]
+    public async Task<IActionResult> AddDailyExercise([FromBody] AddDailyExerciseToFitnessPlanResource addDailyExerciseToFitnessPlanResource,
+        [FromRoute] int fitnessPlanId)
+    {
+        var addDailyExerciseToFitnessPlanCommand = AddDailyExerciseCommandFromResourceAssembler
+            .ToCommandFromResource(addDailyExerciseToFitnessPlanResource, fitnessPlanId);
+        var fitnessPlan = await fitnessPlanCommandService.Handle(addDailyExerciseToFitnessPlanCommand);
+        if (fitnessPlan == null) return NotFound();
+        var resource = FitnessPlanResourceFromEntityAssembler.ToResourceFromEntity(fitnessPlan);
+        return CreatedAtAction(nameof(GetFitnessPlanById), new { fitnessPlanId = resource.Id }, resource);
+    }
+    
+    
 
     [HttpGet("{fitnessPlanId}")]
     public async Task<IActionResult> GetFitnessPlanById(int fitnessPlanId)
