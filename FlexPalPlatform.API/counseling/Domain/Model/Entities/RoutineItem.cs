@@ -1,4 +1,5 @@
-﻿using FlexPalPlatform.API.Counseling.Domain.Model.Aggregates;
+﻿using System.Text.Json.Serialization;
+using FlexPalPlatform.API.Counseling.Domain.Model.Aggregates;
 
 namespace FlexPalPlatform.API.Counseling.Domain.Model.Entities;
 
@@ -11,8 +12,10 @@ public class RoutineItem
     public string Type { get; private set; }
     public int RestTime { get; private set; }
     public int FitnessPlanId { get; set; } // FK to FitnessPlan
+    
+    [JsonIgnore]
     public FitnessPlan FitnessPlan { get; set; } // Navigation Property
-
+    
     public RoutineItem(string name, int sets, int reps, string type, int restTime)
     {
         Name = name;
