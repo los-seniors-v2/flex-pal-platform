@@ -21,11 +21,16 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="counseling\Application\CommandServices\" />
       <Folder Include="counseling\Application\OutboundServices\" />
       <Folder Include="counseling\Application\QueryServices\" />
       <Folder Include="counseling\Domain\Model\ValueObjects\" />
-      <Folder Include="counseling\Interfaces\REST\Transform\" />
       <Folder Include="iam\Domain\Model\ValueObjects\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="counseling\Application\CommandServices\FitnessPlanCommandService.cs" />
+      <Compile Remove="counseling\Domain\Services\IFitnessPlanService.cs" />
     </ItemGroup>
 
 </Project>
