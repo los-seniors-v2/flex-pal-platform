@@ -25,7 +25,6 @@
       <Folder Include="counseling\Application\QueryServices\" />
       <Folder Include="counseling\Domain\Model\ValueObjects\" />
       <Folder Include="counseling\Interfaces\REST\Transform\" />
-      <Folder Include="iam\Domain\Model\ValueObjects\" />
     </ItemGroup>
 
 </Project>
