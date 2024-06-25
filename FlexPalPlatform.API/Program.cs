@@ -11,6 +11,7 @@ using FlexPalPlatform.API.iam.Domain.Repositories;
 using FlexPalPlatform.API.iam.Domain.Services;
 using FlexPalPlatform.API.iam.Infrastructure.Hashing.BCrypt.Services;
 using FlexPalPlatform.API.iam.Infrastructure.Persistence.EFC.Repositories;
+using FlexPalPlatform.API.iam.Infrastructure.Tokens.JWT.Configuration;
 using FlexPalPlatform.API.iam.Infrastructure.Tokens.JWT.Services;
 using FlexPalPlatform.API.iam.Interfaces.ACL;
 using FlexPalPlatform.API.iam.Interfaces.ACL.Services;
@@ -145,6 +146,8 @@ builder.Services.AddScoped<IProfileCommandService,ProfileCommandService>();
 builder.Services.AddScoped<IProfileQueryService,ProfileQueryService>();
 builder.Services.AddScoped<IProfilesContextFacade,ProfilesContextFacade>();
 
+// TokenSettings Configuration
+builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
 //Bounded Context User Injection Configuration
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserCommandService,UserCommandService>();
