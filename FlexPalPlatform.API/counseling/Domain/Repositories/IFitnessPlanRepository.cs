@@ -5,5 +5,5 @@ namespace FlexPalPlatform.API.Counseling.Domain.Repositories;
 
 public interface IFitnessPlanRepository : IBaseRepository<FitnessPlan>
 {
-    Task<FitnessPlan?> GetWithDetailsByIdAsync(int fitnessPlanId);
+    Task<FitnessPlan?> FindByIdWithRoutineItemsAsync(int id);
 }

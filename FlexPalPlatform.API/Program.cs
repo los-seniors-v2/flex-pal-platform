@@ -99,7 +99,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 
 // Bounded Context Profile Injection Configuration
-
+builder.Services.AddScoped<IWeightLossService, WeightLossCommandService>();
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<IProfileCommandService,ProfileCommandService>();
 builder.Services.AddScoped<IProfileQueryService,ProfileQueryService>();

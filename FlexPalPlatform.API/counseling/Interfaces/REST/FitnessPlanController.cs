@@ -5,15 +5,19 @@ using FlexPalPlatform.API.Counseling.Domain.Model.Commands;
 using FlexPalPlatform.API.Counseling.Domain.Model.Entities;
 using FlexPalPlatform.API.Counseling.Domain.Model.Queries;
 using FlexPalPlatform.API.Counseling.Domain.Services;
+using FlexPalPlatform.API.Counseling.Infrastructure.Persistence.EFC.Repositories;
 using FlexPalPlatform.API.Counseling.Interfaces.REST.Resources;
 using FlexPalPlatform.API.Counseling.Interfaces.REST.Transform;
+using FlexPalPlatform.API.Shared.Infrastructure.Persistence.EFC.Configuration;
 
 namespace FlexPalPlatform.API.Counseling.Interfaces.REST;
 
 [ApiController]
 [Route("api/v1/fitness-plans")]
-public class FitnessPlanController(FitnessPlanCommandService fitnessPlanCommandService, FitnessPlanQueryService fitnessPlanQueryService) : ControllerBase
+public class FitnessPlanController(FitnessPlanCommandService fitnessPlanCommandService, FitnessPlanQueryService fitnessPlanQueryService, AppDbContext context) : ControllerBase
 {
+    private readonly AppDbContext _context;
+    
     [HttpPost]
     public async Task<IActionResult> CreateFitnessPlan([FromBody] CreateFitnessPlanResource createFitnessPlanResource)
     {
@@ -60,12 +64,11 @@ public class FitnessPlanController(FitnessPlanCommandService fitnessPlanCommandS
         return CreatedAtAction(nameof(GetFitnessPlanById), new { fitnessPlanId = resource.Id }, resource);
     }
     
-    
-
     [HttpGet("{fitnessPlanId}")]
     public async Task<IActionResult> GetFitnessPlanById(int fitnessPlanId)
     {
         var fitnessPlan = await fitnessPlanQueryService.Handle(new GetFitnessPlanByIdQuery(fitnessPlanId));
+        await context.SaveChangesAsync();
         if (fitnessPlan == null) return NotFound();
         var resource = FitnessPlanResourceFromEntityAssembler.ToResourceFromEntity(fitnessPlan);
         return Ok(resource);

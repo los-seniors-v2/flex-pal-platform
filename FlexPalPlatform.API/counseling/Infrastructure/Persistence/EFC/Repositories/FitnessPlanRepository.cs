@@ -8,12 +8,12 @@ namespace FlexPalPlatform.API.Counseling.Infrastructure.Persistence.EFC.Reposito
 
 public class FitnessPlanRepository(AppDbContext context) : BaseRepository<FitnessPlan>(context), IFitnessPlanRepository
 {
-    public async Task<FitnessPlan?> GetWithDetailsByIdAsync(int fitnessPlanId)
+    public async Task<FitnessPlan?> FindByIdWithRoutineItemsAsync(int id)
     {
         return await Context.Set<FitnessPlan>()
             .Include(fp => fp.RoutineItems)
             .Include(fp => fp.NutritionalMeals)
             .Include(fp => fp.DailyExercises)
-            .FirstOrDefaultAsync(fp => fp.Id == fitnessPlanId);
+            .FirstOrDefaultAsync(fp => fp.Id == id);
     }
 }

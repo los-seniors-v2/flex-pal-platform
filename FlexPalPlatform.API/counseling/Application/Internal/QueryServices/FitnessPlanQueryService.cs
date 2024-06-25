@@ -11,5 +11,5 @@ public class FitnessPlanQueryService(IFitnessPlanRepository fitnessPlanRepositor
         await fitnessPlanRepository.ListAsync();
 
     public async Task<FitnessPlan?> Handle(GetFitnessPlanByIdQuery query) =>
-        await fitnessPlanRepository.FindByIdAsync(query.FitnessPlanId);
+        await fitnessPlanRepository.FindByIdWithRoutineItemsAsync(query.FitnessPlanId);
 }
